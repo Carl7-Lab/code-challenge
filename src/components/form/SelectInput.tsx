@@ -22,9 +22,16 @@ interface props {
   label: string;
   description: string;
   options: { value: string; label: string }[];
+  isRequired?: boolean;
 }
 
-const SelectInput = ({ name, label, description, options }: props) => {
+const SelectInput = ({
+  name,
+  label,
+  description,
+  options,
+  isRequired = false,
+}: props) => {
   const { control } = useFormContext();
 
   return (
@@ -33,7 +40,9 @@ const SelectInput = ({ name, label, description, options }: props) => {
       name={name}
       render={({ field }) => (
         <FormItem className='w-full space-y-3'>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel>
+            {label} {isRequired && <span className='text-red-500'>*</span>}
+          </FormLabel>
           <FormControl>
             <Select onValueChange={field.onChange} value={field.value}>
               <SelectTrigger>

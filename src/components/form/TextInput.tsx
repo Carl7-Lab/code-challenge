@@ -17,9 +17,16 @@ interface props {
   label?: string;
   description?: string;
   placeholder?: string;
+  isRequired?: boolean;
 }
 
-const TextInput = ({ name, label, description, placeholder }: props) => {
+const TextInput = ({
+  name,
+  label,
+  description,
+  placeholder,
+  isRequired = false,
+}: props) => {
   const { control } = useFormContext();
 
   return (
@@ -28,7 +35,11 @@ const TextInput = ({ name, label, description, placeholder }: props) => {
       name={name}
       render={({ field, fieldState }) => (
         <FormItem className='space-y-3 w-full'>
-          {label && <FormLabel>{label}</FormLabel>}
+          {label && (
+            <FormLabel>
+              {label} {isRequired && <span className='text-red-500'>*</span>}
+            </FormLabel>
+          )}
           <FormControl>
             <Input placeholder={placeholder} {...field} />
           </FormControl>

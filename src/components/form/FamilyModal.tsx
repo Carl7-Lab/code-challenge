@@ -21,7 +21,11 @@ const FamilyModal = ({ name, label, description }: props) => {
   return (
     <ResponsiveModal>
       <ResponsiveModalTrigger asChild>
-        <Button type='button'>Agregar Miembro Familiar</Button>
+        <div>
+          <Button type='button'>
+            Agregar Miembro Familiar <span className='text-red-500'>*</span>
+          </Button>
+        </div>
       </ResponsiveModalTrigger>
       <ResponsiveModalContent>
         <ResponsiveModalHeader>

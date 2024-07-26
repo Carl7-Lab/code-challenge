@@ -15,9 +15,15 @@ interface props {
   name: string;
   label: string;
   description: string;
+  isRequired?: boolean;
 }
 
-const DatePickerInput = ({ name, label, description }: props) => {
+const DatePickerInput = ({
+  name,
+  label,
+  description,
+  isRequired = false,
+}: props) => {
   const { control } = useFormContext();
 
   return (
@@ -26,7 +32,9 @@ const DatePickerInput = ({ name, label, description }: props) => {
       name={name}
       render={({ field }) => (
         <FormItem className=' w-full space-y-3'>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel>
+            {label} {isRequired && <span className='text-red-500'>*</span>}
+          </FormLabel>
           <FormControl>
             <DateTimePicker
               locale={es}

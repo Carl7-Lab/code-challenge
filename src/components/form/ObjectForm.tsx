@@ -125,11 +125,17 @@ const ObjectForm = ({ formValues, id }: props) => {
               Información Personal
             </h2>
             <div className='flex gap-2'>
-              <TextInput name='name' label='Nombre:' description='Su nombre.' />
+              <TextInput
+                name='name'
+                label='Nombre:'
+                description='Su nombre.'
+                isRequired
+              />
               <TextInput
                 name='lastName'
                 label='Apellido:'
                 description='Su apellido.'
+                isRequired
               />
             </div>
             <div className='flex gap-2'>
@@ -137,17 +143,20 @@ const ObjectForm = ({ formValues, id }: props) => {
                 name='ci'
                 label='Cédula de Identidad (CI):'
                 description='Ingrese su número de cédula.'
+                isRequired
               />
               <DatePickerInput
                 name='dateOfBirth'
                 label='Fecha de Nacimiento:'
                 description='Seleccione su fecha de nacimiento.'
+                isRequired
               />
               <SelectInput
                 name='gender'
                 label='Género:'
                 description='Seleccione su género.'
                 options={genderOptions}
+                isRequired
               />
             </div>
             <h2 className='mt-10 scroll-m-20 border-b pb-2 text-3xl font-extrabold tracking-tight transition-colors first:mt-0'>
@@ -159,6 +168,7 @@ const ObjectForm = ({ formValues, id }: props) => {
                 name='hasRUC'
                 label='¿Tiene RUC?:'
                 description='Ingrese su número de RUC.'
+                isRequired
               />
               <TextInput
                 name='rucNumber'
@@ -175,6 +185,7 @@ const ObjectForm = ({ formValues, id }: props) => {
                 name={'hasFarm'}
                 label={'¿Tiene finca?:'}
                 description={'Indique si tiene una finca'}
+                isRequired
               />
             </div>
             <div className='flex gap-2'>
@@ -221,6 +232,7 @@ const ObjectForm = ({ formValues, id }: props) => {
                 name={'hasWorkers'}
                 label={'¿Tienes trabajadores?:'}
                 description={'Indique si tiene trabajadores a su cargo.'}
+                isRequired
               />
               <NumberInput
                 name='totalWorkers'
@@ -273,6 +285,7 @@ const ObjectForm = ({ formValues, id }: props) => {
                 name={'hasPregnandWorkers'}
                 label={'¿Tiene trabajadoras embarazadas?:'}
                 description={'Indique si tiene trabajadoras embarazadas.'}
+                isRequired
               />
             </div>
             <div className='flex gap-2'>

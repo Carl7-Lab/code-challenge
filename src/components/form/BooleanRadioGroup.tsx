@@ -15,9 +15,16 @@ interface props {
   name: string;
   label: string;
   description: string;
+  isRequired?: boolean;
 }
 
-const BooleanRadioGroup = ({ control, name, label, description }: props) => {
+const BooleanRadioGroup = ({
+  control,
+  name,
+  label,
+  description,
+  isRequired = false,
+}: props) => {
   const { getValues } = useFormContext();
 
   return (
@@ -27,7 +34,7 @@ const BooleanRadioGroup = ({ control, name, label, description }: props) => {
       render={({ field }) => (
         <FormItem id={name} className='space-y-3 w-full'>
           <FormLabel htmlFor={name} id={name}>
-            {label}
+            {label} {isRequired && <span className='text-red-500'>*</span>}
           </FormLabel>
           <FormControl id={name}>
             <RadioGroup

@@ -34,7 +34,7 @@ export default function Home() {
     return (
       <main className='flex min-h-screen flex-col justify-between p-4 md:p-8 lg:p-16 xl:p-24 max-w-6xl mx-auto'>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-          {Array(3)
+          {Array(4)
             .fill(null)
             .map((_, index) => (
               <div

@@ -16,7 +16,7 @@ interface props {
 }
 
 const FamilyTable = ({ name }: props) => {
-  const { getValues } = useFormContext();
+  const { getValues, formState } = useFormContext();
   const familyMembers = getValues(name);
 
   return (
@@ -48,6 +48,11 @@ const FamilyTable = ({ name }: props) => {
           <TableCell colSpan={3}>
             Total: {familyMembers.length} miembros
           </TableCell>
+          {!!formState.errors.family && (
+            <TableCell colSpan={3} className='text-red-500 bg-red-100'>
+              {formState.errors.family && 'Error'}
+            </TableCell>
+          )}
         </TableRow>
       </TableFooter>
     </Table>

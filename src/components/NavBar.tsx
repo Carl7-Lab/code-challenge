@@ -14,7 +14,6 @@ const NavBar = () => {
       </Link>
       <Link
         href={'/create-object'}
-        // className=''
         className={`inline-flex items-center px-4 py-2 font-medium text-center text-white bg-slate-700 hover:bg-slate-900 rounded-lg ${pathname === '/create-object' ? 'hidden' : ''}`}
       >
         Crear Objeto

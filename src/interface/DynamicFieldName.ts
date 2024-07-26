@@ -1,1 +1,4 @@
-export type DynamicFieldName = `${string}[${number}].${string}`;
+export type DynamicFieldName =
+  | `${string}`
+  | `${string}[${number}].${string}`
+  | `${string}.${string}`;

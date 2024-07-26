@@ -59,81 +59,7 @@ const isAdult = (dateOfBirth: Date) => {
   return age >= 18;
 };
 
-// export const objectSchema = z.object({
-//   name: z.string().trim().min(1, 'Nombre es requerido'),
-//   lastName: z.string().min(1, 'Apellido es requerido'),
-//   ci: z.string().min(1, 'Cédula de Identidad es requerida').refine(validateCI, {
-//     message: 'Cédula de Identidad inválida',
-//   }),
-//   dateOfBirth: z
-//     .date()
-//     .min(new Date(1900, 0, 1), 'Fecha de Nacimiento es requerida')
-//     .refine((dateOfBirth) => isAdult(dateOfBirth), {
-//       message: 'Debes ser mayor de 18 años',
-//     }),
-//   hasRuc: z.boolean(),
-//   rucNumber: z
-//     .string()
-//     .optional()
-//     .refine((ruc) => !ruc || validateRUC(ruc), {
-//       message: 'RUC inválido',
-//     }),
-//   gender: z.enum(['male', 'female']),
-//   hasFarm: z.boolean(),
-//   farmHa: z.number().optional(),
-//   farmName: z.string().optional(),
-//   crops: z.string().optional(),
-//   family: z
-//     .array(
-//       z.object({
-//         name: z.string().min(1, 'Nombre es requerido'),
-//         lastName: z.string().min(1, 'Apellido es requerido'),
-//         ci: z
-//           .string()
-//           .min(1, 'Cédula de Identidad es requerida')
-//           .refine(validateCI, {
-//             message: 'Cédula de Identidad inválida',
-//           }),
-//       })
-//     )
-//     .min(1, 'Debe incluir al menos un miembro de familia'),
-//   hasWorkers: z.boolean(),
-//   totalWorkers: z.number().optional(),
-//   menWorkers: z.number().optional(),
-//   womanWorkers: z.number().optional(),
-//   over18Workers: z.number().optional(),
-//   under18Workers: z.number().optional(),
-//   //   minorWorkersOcuppacion: z
-//   //     .string()
-//   //     .optional()
-//   //     .refine(
-//   //       (minorWorkersOcuppacion) =>
-//   //         objectSchema.shape.under18Workers.value > 0
-//   //           ? minorWorkersOcuppacion !== undefined
-//   //           : true,
-//   //       {
-//   //         message:
-//   //           'Ocupación de los trabajadores menores de edad es requerida si hay trabajadores menores de 18 años',
-//   //       }
-//   //     ),
-//   hasPregnandWorkers: z.boolean(),
-//   pregnandWorkers: z.number().optional(),
-//   //   pregnandWorkersOcuppacion: z
-//   //     .string()
-//   //     .optional()
-//   //     .refine(
-//   //       (pregnandWorkersOcuppacion) =>
-//   //         objectSchema.shape.pregnandWorkers.value > 0
-//   //           ? pregnandWorkersOcuppacion !== undefined
-//   //           : true,
-//   //       {
-//   //         message:
-//   //           'Ocupación de las trabajadoras embarazadas es requerida si hay trabajadoras embarazadas',
-//   //       }
-//   //     ),
-// });
-
-const familySchema = z.object({
+export const familySchema = z.object({
   name: z.string().trim().min(1, { message: 'El nombre es obligatorio' }),
   lastName: z.string().trim().min(1, { message: 'El apellido es obligatorio' }),
   ci: z
@@ -144,12 +70,6 @@ const familySchema = z.object({
       message: 'Cédula de Identidad inválida',
     }),
 });
-
-// const cropSchema = z.object({
-//   label: z.string(),
-//   value: z.string(),
-//   disable: z.boolean().optional(),
-// });
 
 export const objectSchema = z
   .object({
@@ -186,7 +106,6 @@ export const objectSchema = z
     hasFarm: z.boolean({ required_error: 'El campo de finca es obligatorio' }),
     farmHa: z.number().optional(),
     farmName: z.string().trim().optional(),
-    // crops: z.array(z.string().trim()).optional(),
     crops: z.array(z.string()).optional(),
 
     family: z
@@ -222,10 +141,7 @@ export const objectSchema = z
   .refine(
     (data) => {
       if (data.hasFarm) {
-        return (
-          data.farmName!.trim() !== ''
-          //   data.crops!.length > 0
-        );
+        return data.farmName!.trim() !== '';
       }
       return true;
     },

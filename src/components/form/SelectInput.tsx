@@ -46,7 +46,7 @@ const SelectInput = ({
           <FormControl>
             <Select onValueChange={field.onChange} value={field.value}>
               <SelectTrigger>
-                <SelectValue placeholder='Seleccione una opcion' />
+                <SelectValue placeholder='Seleccione una opción' />
               </SelectTrigger>
               <SelectContent>
                 {options.map((option, index) => (

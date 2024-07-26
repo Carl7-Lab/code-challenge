@@ -19,6 +19,8 @@ const FamilyTable = ({ name }: props) => {
   const { getValues, formState } = useFormContext();
   const familyMembers = getValues(name);
 
+  console.log('FamilyTable errors: ', formState.errors);
+
   return (
     <Table>
       <TableCaption>Lista de Miembros Familiares</TableCaption>

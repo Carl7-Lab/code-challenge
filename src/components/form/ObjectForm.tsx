@@ -1,7 +1,7 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ObjectProps } from '@/interface/ObjectType';
@@ -36,7 +36,6 @@ const defaultValuesForm: ObjectProps = {
   farmHa: undefined,
   farmName: '',
   crops: [],
-  // family: [{ name: '', lastName: '', ci: '' }],
   family: [],
   hasWorkers: undefined,
   totalWorkers: undefined,
@@ -73,6 +72,11 @@ const ObjectForm = ({ formValues, id }: props) => {
       : defaultValuesForm,
   });
   const uri = process.env.NEXT_PUBLIC_URI!;
+  const [family, setFamily] = useState<any[]>([]);
+
+  const addFamilyMember = (member: any) => {
+    setFamily([...family, member]);
+  };
 
   const onSubmit = async (data: z.output<typeof objectSchema>) => {
     console.log('values: ', data);
@@ -167,9 +171,13 @@ const ObjectForm = ({ formValues, id }: props) => {
                 control={form.control}
                 name='hasRUC'
                 label='¿Tiene RUC?:'
-                description='Ingrese su número de RUC.'
+                description='Seleccione si tiene RUC.'
                 isRequired
               />
+            </div>
+            <div
+              className={`flex gap-2 w-[50%] ${form.watch('hasRUC') ? '' : 'hidden'}`}
+            >
               <TextInput
                 name='rucNumber'
                 label='Número de RUC:'
@@ -188,7 +196,9 @@ const ObjectForm = ({ formValues, id }: props) => {
                 isRequired
               />
             </div>
-            <div className='flex gap-2'>
+            <div
+              className={`flex gap-2 ${form.watch('hasFarm') ? '' : 'hidden'}`}
+            >
               <NumberInput
                 name='farmHa'
                 label='Hectáreas de la finca:'
@@ -234,52 +244,56 @@ const ObjectForm = ({ formValues, id }: props) => {
                 description={'Indique si tiene trabajadores a su cargo.'}
                 isRequired
               />
-              <NumberInput
-                name='totalWorkers'
-                label='Total de trabajadores:'
-                description='Número total de trabajadores.'
-                placeholder='Ej. 20'
-                min={0}
-              />
+            </div>
+            <div className={`${form.watch('hasWorkers') ? '' : 'hidden'}`}>
+              <div className='flex gap-2'>
+                <NumberInput
+                  name='totalWorkers'
+                  label='Total de trabajadores:'
+                  description='Número total de trabajadores.'
+                  placeholder='Ej. 20'
+                  min={0}
+                />
+                <NumberInput
+                  name='menWorkers'
+                  label='Trabajadores hombres:'
+                  description='Número de hombres.'
+                  placeholder='Ej. 10'
+                  min={0}
+                />
+              </div>
+              <div className='flex gap-2'>
+                <NumberInput
+                  name='womanWorkers'
+                  label='Trabajadoras mujeres:'
+                  description='Número de mujeres.'
+                  placeholder='Ej. 15'
+                  min={0}
+                />
+                <NumberInput
+                  name='over18Workers'
+                  label='Trabajadores mayores de 18 años:'
+                  description='Número de mayores de 18 años.'
+                  placeholder='Ej. 8'
+                  min={0}
+                />
+              </div>
+              <div className='flex gap-2'>
+                <NumberInput
+                  name='under18Workers'
+                  label='Trabajadores menores de 18 años:'
+                  description='Número de menores de 18 años.'
+                  placeholder='Ej. 5'
+                  min={0}
+                />
+                <TextInput
+                  name='minorWorkersOcuppacion'
+                  label='Ocupación de los trabajadores menores de edad:'
+                  description='Describa la ocupación de los trabajadores menores de edad.'
+                />
+              </div>
             </div>
             <div className='flex gap-2'>
-              <NumberInput
-                name='menWorkers'
-                label='Trabajadores hombres:'
-                description='Número de hombres.'
-                placeholder='Ej. 10'
-                min={0}
-              />
-              <NumberInput
-                name='womanWorkers'
-                label='Trabajadoras mujeres:'
-                description='Número de mujeres.'
-                placeholder='Ej. 15'
-                min={0}
-              />
-            </div>
-            <div className='flex gap-2'>
-              <NumberInput
-                name='over18Workers'
-                label='Trabajadores mayores de 18 años:'
-                description='Número de mayores de 18 años.'
-                placeholder='Ej. 8'
-                min={0}
-              />
-              <NumberInput
-                name='under18Workers'
-                label='Trabajadores menores de 18 años:'
-                description='Número de menores de 18 años.'
-                placeholder='Ej. 5'
-                min={0}
-              />
-            </div>
-            <div className='flex gap-2'>
-              <TextInput
-                name='minorWorkersOcuppacion'
-                label='Ocupación de los trabajadores menores de edad:'
-                description='Describa la ocupación de los trabajadores menores de edad.'
-              />
               <BooleanRadioGroup
                 control={form.control}
                 name={'hasPregnandWorkers'}
@@ -288,7 +302,9 @@ const ObjectForm = ({ formValues, id }: props) => {
                 isRequired
               />
             </div>
-            <div className='flex gap-2'>
+            <div
+              className={`flex gap-2 ${form.watch('hasPregnandWorkers') ? '' : 'hidden'}`}
+            >
               <NumberInput
                 name='pregnandWorkers'
                 label='Trabajadoras embarazadas:'

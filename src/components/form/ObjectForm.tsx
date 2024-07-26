@@ -74,45 +74,42 @@ const ObjectForm = ({ formValues, id }: props) => {
   const uri = process.env.NEXT_PUBLIC_URI!;
   const [family, setFamily] = useState<any[]>([]);
 
-  const addFamilyMember = (member: any) => {
-    setFamily([...family, member]);
-  };
-
   const onSubmit = async (data: z.output<typeof objectSchema>) => {
-    console.log('values: ', data);
-    if (!formValues) {
-      try {
-        const response = await fetch(`${uri}`, {
-          method: 'POST',
-          headers: {
-            'Content-type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        router.push('/');
-      } catch (error) {
-        console.log('error: ', error);
-      }
-    } else {
-      try {
-        const response = await fetch(`${uri}/${id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        router.push('/');
-      } catch (error) {
-        console.log('error: ', error);
-      }
-    }
+    console.log('data: ', data);
+
+    // if (!formValues) {
+    //   try {
+    //     const response = await fetch(`${uri}`, {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-type': 'application/json',
+    //       },
+    //       body: JSON.stringify(data),
+    //     });
+    //     if (!response.ok) {
+    //       throw new Error('Network response was not ok');
+    //     }
+    //     router.push('/');
+    //   } catch (error) {
+    //     console.log('error: ', error);
+    //   }
+    // } else {
+    //   try {
+    //     const response = await fetch(`${uri}/${id}`, {
+    //       method: 'PUT',
+    //       headers: {
+    //         'Content-type': 'application/json',
+    //       },
+    //       body: JSON.stringify(data),
+    //     });
+    //     if (!response.ok) {
+    //       throw new Error('Network response was not ok');
+    //     }
+    //     router.push('/');
+    //   } catch (error) {
+    //     console.log('error: ', error);
+    //   }
+    // }
   };
 
   return (
@@ -292,31 +289,31 @@ const ObjectForm = ({ formValues, id }: props) => {
                   description='Describa la ocupación de los trabajadores menores de edad.'
                 />
               </div>
-            </div>
-            <div className='flex gap-2'>
-              <BooleanRadioGroup
-                control={form.control}
-                name={'hasPregnandWorkers'}
-                label={'¿Tiene trabajadoras embarazadas?:'}
-                description={'Indique si tiene trabajadoras embarazadas.'}
-                isRequired
-              />
-            </div>
-            <div
-              className={`flex gap-2 ${form.watch('hasPregnandWorkers') ? '' : 'hidden'}`}
-            >
-              <NumberInput
-                name='pregnandWorkers'
-                label='Trabajadoras embarazadas:'
-                description='Número de trabajadoras embarazadas.'
-                placeholder='Ej. 3'
-                min={0}
-              />
-              <TextInput
-                name='pregnandWorkersOcuppacion'
-                label='Ocupación de las trabajadoras embarazadas:'
-                description='Describa la ocupación de las trabajadoras embarazadas.'
-              />
+              <div className='flex gap-2'>
+                <BooleanRadioGroup
+                  control={form.control}
+                  name={'hasPregnandWorkers'}
+                  label={'¿Tiene trabajadoras embarazadas?:'}
+                  description={'Indique si tiene trabajadoras embarazadas.'}
+                  isRequired
+                />
+              </div>
+              <div
+                className={`flex gap-2 ${form.watch('hasPregnandWorkers') ? '' : 'hidden'}`}
+              >
+                <NumberInput
+                  name='pregnandWorkers'
+                  label='Trabajadoras embarazadas:'
+                  description='Número de trabajadoras embarazadas.'
+                  placeholder='Ej. 3'
+                  min={0}
+                />
+                <TextInput
+                  name='pregnandWorkersOcuppacion'
+                  label='Ocupación de las trabajadoras embarazadas:'
+                  description='Describa la ocupación de las trabajadoras embarazadas.'
+                />
+              </div>
             </div>
             <Button
               type='submit'

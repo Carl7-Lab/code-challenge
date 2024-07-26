@@ -126,6 +126,22 @@ export const objectSchema = z
     pregnandWorkers: z.number().optional(),
     pregnandWorkersOcuppacion: z.string().trim().optional(),
   })
+  .transform((data) => {
+    if (!data.hasRUC) {
+      return { ...data, rucNumber: undefined };
+    }
+    return data;
+  })
+  .refine((data) => (data.hasRUC ? !!data.rucNumber : true), {
+    message: 'El número de RUC es obligatorio si afirma tenerlo.',
+    path: ['rucNumber'],
+  })
+  .transform((data) => {
+    if (!data.hasFarm) {
+      return { ...data, farmHa: undefined, farmName: undefined, crops: [] };
+    }
+    return data;
+  })
   .refine(
     (data) => {
       if (data.hasFarm) {
@@ -162,6 +178,23 @@ export const objectSchema = z
       path: ['crops'],
     }
   )
+  .transform((data) => {
+    if (!data.hasWorkers) {
+      return {
+        ...data,
+        totalWorkers: undefined,
+        menWorkers: undefined,
+        womanWorkers: undefined,
+        over18Workers: undefined,
+        under18Workers: undefined,
+        hasPregnandWorkers: false,
+        pregnandWorkers: undefined,
+        pregnandWorkersOcuppacion: '',
+        minorWorkersOcuppacion: '',
+      };
+    }
+    return data;
+  })
   .refine(
     (data) => {
       if (data.hasWorkers) {
@@ -226,6 +259,16 @@ export const objectSchema = z
       path: ['under18Workers'],
     }
   )
+  .transform((data) => {
+    if (!data.hasPregnandWorkers) {
+      return {
+        ...data,
+        pregnandWorkers: undefined,
+        pregnandWorkersOcuppacion: '',
+      };
+    }
+    return data;
+  })
   .refine(
     (data) => {
       if (data.hasPregnandWorkers) {
@@ -253,7 +296,7 @@ export const objectSchema = z
   )
   .refine(
     (data) => {
-      if (data.pregnandWorkers! > 0) {
+      if (data.under18Workers! > 0) {
         return data.minorWorkersOcuppacion !== '';
       }
       return true;
@@ -265,7 +308,7 @@ export const objectSchema = z
   )
   .refine(
     (data) => {
-      if (data.under18Workers! > 0) {
+      if (data.pregnandWorkers! > 0) {
         return data.pregnandWorkersOcuppacion !== '';
       }
       return true;

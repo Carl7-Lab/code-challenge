@@ -120,9 +120,7 @@ export const objectSchema = z
     over18Workers: z.number().optional(),
     under18Workers: z.number().optional(),
     minorWorkersOcuppacion: z.string().trim().optional(),
-    hasPregnandWorkers: z.boolean({
-      required_error: 'El campo de trabajadoras embarazadas es obligatorio',
-    }),
+    hasPregnandWorkers: z.boolean().optional(),
     pregnandWorkers: z.number().optional(),
     pregnandWorkersOcuppacion: z.string().trim().optional(),
   })
@@ -205,6 +203,18 @@ export const objectSchema = z
     {
       message: 'Número total de trabajadores es obligatorio.',
       path: ['totalWorkers'],
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.hasWorkers) {
+        return !!data.hasPregnandWorkers;
+      }
+      return true;
+    },
+    {
+      message: 'El campo de trabajadoras embarazadas es obligatorio',
+      path: ['hasPregnandWorkers'],
     }
   )
   .refine(

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { Button } from '../ui/button';
 import {
   Table,
   TableBody,
@@ -13,9 +14,10 @@ import {
 
 interface props {
   name: string;
+  remove: any;
 }
 
-const FamilyTable = ({ name }: props) => {
+const FamilyTable = ({ name, remove }: props) => {
   const { getValues, formState } = useFormContext();
   const familyMembers = getValues(name);
 
@@ -29,10 +31,11 @@ const FamilyTable = ({ name }: props) => {
           <TableHead>Nombre</TableHead>
           <TableHead>Apellido</TableHead>
           <TableHead>Cédula de Identidad (CI)</TableHead>
+          <TableHead>Acciones</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {familyMembers.map(
+        {/* {familyMembers.map(
           (
             member: { name: string; lastName: string; ci: string },
             index: number
@@ -43,15 +46,33 @@ const FamilyTable = ({ name }: props) => {
               <TableCell>{member.ci}</TableCell>
             </TableRow>
           )
+        )} */}
+        {familyMembers.length === 0 ? (
+          <TableRow>
+            <TableCell colSpan={4}>Datos no disponibles.</TableCell>
+          </TableRow>
+        ) : (
+          familyMembers.map((field: any, index: any) => (
+            <TableRow key={index}>
+              <TableCell>{field.name}</TableCell>
+              <TableCell>{field.lastName}</TableCell>
+              <TableCell>{field.ci}</TableCell>
+              <TableCell>
+                <Button variant='destructive' onClick={() => remove(index)}>
+                  Eliminar
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))
         )}
       </TableBody>
       <TableFooter>
         <TableRow>
-          <TableCell colSpan={3}>
+          <TableCell colSpan={!!formState.errors.family ? 3 : 4}>
             Total: {familyMembers.length} miembros
           </TableCell>
           {!!formState.errors.family && (
-            <TableCell colSpan={3} className='text-red-500 bg-red-100'>
+            <TableCell colSpan={1} className='text-red-500 bg-red-100'>
               {formState.errors.family && 'Error'}
             </TableCell>
           )}

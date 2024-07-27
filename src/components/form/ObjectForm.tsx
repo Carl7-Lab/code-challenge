@@ -2,12 +2,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ObjectProps } from '@/interface/ObjectType';
+import AddFamilyMemberModal from './AddFamilyMemberModal';
 import BooleanRadioGroup from './BooleanRadioGroup';
 import DatePickerInput from './DatePickerInput';
-import FamilyModal from './FamilyModal';
 import FamilyTable from './FamilyTable';
 import MultiSelectInput from './MultiSelectInput';
 import NumberInput from './NumberInput';
@@ -36,7 +36,8 @@ const defaultValuesForm: ObjectProps = {
   farmHa: undefined,
   farmName: '',
   crops: [],
-  family: [],
+  // family: [],
+  family: [{ name: '', lastName: '', ci: '' }],
   hasWorkers: undefined,
   totalWorkers: undefined,
   menWorkers: undefined,
@@ -72,7 +73,6 @@ const ObjectForm = ({ formValues, id }: props) => {
       : defaultValuesForm,
   });
   const uri = process.env.NEXT_PUBLIC_URI!;
-  const [family, setFamily] = useState<any[]>([]);
 
   const onSubmit = async (data: z.output<typeof objectSchema>) => {
     console.log('data: ', data);
@@ -111,6 +111,11 @@ const ObjectForm = ({ formValues, id }: props) => {
     //   }
     // }
   };
+
+  const { control } = form;
+  const { fields, append, remove } = useFieldArray({ name: 'family', control });
+  const [open, setOpen] = useState(false);
+  const handleClose = () => setOpen(false);
 
   return (
     <Form {...form}>
@@ -222,12 +227,15 @@ const ObjectForm = ({ formValues, id }: props) => {
             </h2>
             <div className='flex gap-2'>
               <div className='w-full space-y-3'>
-                <FamilyModal
-                  name={'family'}
-                  label={'Miembro Familiar'}
-                  description={'Detalles del miembro familiar'}
-                />
-                <FamilyTable name={'family'} />
+                <Button
+                  onClick={() => {
+                    setOpen(true);
+                    append({ name: '', lastName: '', ci: '' });
+                  }}
+                >
+                  Agregar miembro de la familia
+                </Button>
+                <FamilyTable name={'family'} remove={remove} />
               </div>
             </div>
             <h2 className='mt-10 scroll-m-20 border-b pb-2 text-3xl font-extrabold tracking-tight transition-colors first:mt-0'>
@@ -317,16 +325,23 @@ const ObjectForm = ({ formValues, id }: props) => {
             </div>
             <Button
               type='submit'
-              // onClick={() => {
-              //   console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-              //   console.log('values: ', form.getValues());
-              //   console.log('Errors: ', form.formState.errors);
-              // }}
+              onClick={() => {
+                console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+                console.log('values: ', form.getValues());
+                console.log('Errors: ', form.formState.errors);
+              }}
               className='w-full text-xl h-[50px] font-extrabold'
             >
               {!formValues ? 'Crear' : 'Editar'}
             </Button>
           </form>
+          <AddFamilyMemberModal
+            open={open}
+            control={control}
+            fields={fields}
+            remove={remove}
+            handleClose={handleClose}
+          />
         </CardContent>
       </Card>
     </Form>
